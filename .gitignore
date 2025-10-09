@@ -1,0 +1,59 @@
+# Model files (large) - global
+**/*.h5
+**/*.keras
+
+# Image datasets (large folders) - global
+**/test/
+**/train_data/
+**/val_data/
+
+# Results and outputs - global
+**/submission*.csv
+**/training_log.csv
+**/log.csv
+
+# Important: Keep these files (NOT ignored) - global
+!**/symbols.txt
+!**/generate_submission.py
+!**/*.md
+
+# Visualizations - global
+**/predictions_verification.png
+**/training_progress.png
+**/sample_train.png
+
+# Temporary files - global
+**/*.pyc
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/.Python
+
+# Jupyter Notebook - global
+**/.ipynb_checkpoints/
+**/*.ipynb
+
+# Virtual environments - global
+**/venv/
+**/env/
+**/ENV/
+
+# OS files - global
+**/.DS_Store
+**/Thumbs.db
+**/*.swp
+**/*.swo
+**/*~
+
+# Zip archives - global
+**/*.zip
+**/*.tar.gz
+**/*.tar
+
+# IDE - global
+**/.vscode/
+**/.idea/
+**/*.sublime-*
+
+# Wheel files - global
+**/*.whl
