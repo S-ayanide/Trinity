@@ -31,7 +31,6 @@
 
 # Jupyter Notebook - global
 **/.ipynb_checkpoints/
-**/*.ipynb
 
 # Virtual environments - global
 **/venv/
