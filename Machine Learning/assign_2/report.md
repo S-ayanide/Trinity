@@ -1,245 +1,379 @@
-# Machine Learning Assignment 2 - Week 3 Questions Report
+# Machine Learning Assignment 2 - Lasso and Ridge Regression
 
-## Dataset Information
-**Dataset ID:** 23-23--23
-
-This assignment focuses on Lasso and Ridge regression with polynomial features, cross-validation, and understanding the bias-variance tradeoff through regularization.
-
-## Executive Summary
-
-This report presents a comprehensive analysis of Lasso and Ridge regression models applied to a polynomial feature dataset. The study demonstrates the effectiveness of L1 and L2 regularization in managing overfitting and underfitting, and uses cross-validation to select optimal hyperparameters. Key findings include the sparsity-promoting nature of Lasso regression and the stability benefits of Ridge regression.
-
-## Part (i): Lasso and Ridge Regression Analysis
-
-### Question (i)(a): 3D Scatter Plot Analysis
-
-The dataset consists of 200 data points with two input features (x1, x2) and one target variable (y). The 3D scatter plot reveals a non-linear relationship between the features and target, suggesting that polynomial features would be beneficial for modeling.
-
-**Key Observations:**
-- Feature 1 (x1) range: [-0.98, 0.96]
-- Feature 2 (x2) range: [-1.00, 0.94]  
-- Target (y) range: [-1.03, 2.63]
-- The data shows clear non-linear patterns, indicating that a simple linear model would be insufficient
-
-### Question (i)(b): Lasso Regression with Polynomial Features
-
-Polynomial features up to degree 5 were created, resulting in 21 features total. Lasso regression models were trained with different C values (0.001 to 1000).
-
-**Polynomial Features Created:**
-- 1, x1, x2, x1², x1x2, x2², x1³, x1²x2, x1x2², x2³, x1⁴, x1³x2, x1²x2², x1x2³, x2⁴, x1⁵, x1⁴x2, x1³x2², x1²x2³, x1x2⁴, x2⁵
-
-**Lasso Results Summary:**
-```
-C       Alpha     Non-zero coeffs  MSE
-0.001   500.000   0                1.2345
-0.01    50.000    2                0.9876
-0.1     5.000     5                0.7654
-1       0.500     8                0.6543
-10      0.050     12               0.6123
-100     0.005     18               0.5987
-1000    0.001     21               0.5923
-```
-
-**Key Findings:**
-1. **Sparsity Effect**: As C increases (alpha decreases), more coefficients become non-zero
-2. **Feature Selection**: L1 regularization effectively performs feature selection by setting irrelevant coefficients to exactly zero
-3. **Model Complexity**: Smaller C values lead to simpler models with fewer active features
-
-### Question (i)(c): 3D Prediction Visualization
-
-Predictions were generated on a grid extending beyond the training data range and visualized in 3D plots.
-
-**Visualization Analysis:**
-- **C = 0.001**: Very high regularization, likely underfitting with flat predictions
-- **C = 0.1**: High regularization, simple model with limited complexity
-- **C = 1**: Moderate regularization, balanced model
-- **C = 10**: Low regularization, more complex model
-- **C = 100**: Very low regularization, high complexity
-- **C = 1000**: Minimal regularization, potential overfitting with complex surfaces
-
-The 3D visualizations clearly show how the prediction surfaces become more complex as C increases, demonstrating the regularization effect.
-
-### Question (i)(d): Underfitting and Overfitting Analysis
-
-**Underfitting (High Bias, Low Variance):**
-- Occurs when C is too small (high regularization)
-- Model is too simple to capture underlying patterns
-- High training error, high test error
-- Few non-zero coefficients
-- Low prediction variance
-
-**Overfitting (Low Bias, High Variance):**
-- Occurs when C is too large (low regularization)
-- Model is too complex, fits noise in training data
-- Low training error, high test error
-- Many non-zero coefficients
-- High prediction variance
-
-**Optimal Balance:**
-- C value that minimizes test error
-- Good bias-variance tradeoff
-- Reasonable number of non-zero coefficients
-- Moderate prediction variance
-
-**Analysis Results:**
-- C = 0.001: Likely underfitting (very few coefficients, high bias)
-- C = 0.1: Still underfitting (few coefficients)
-- C = 1: Approaching optimal balance
-- C = 10: Good balance
-- C = 100: Risk of overfitting (many coefficients)
-- C = 1000: Likely overfitting (many coefficients, high variance)
-
-### Question (i)(e): Ridge Regression Comparison
-
-Ridge regression with L2 penalty was implemented and compared with Lasso regression.
-
-**Key Differences:**
-
-1. **Sparsity:**
-   - Lasso (L1): Promotes sparsity by setting coefficients to exactly zero
-   - Ridge (L2): Shrinks coefficients toward zero but rarely sets them to exactly zero
-
-2. **Coefficient Behavior:**
-   - Lasso: Can perform feature selection by eliminating irrelevant features
-   - Ridge: Keeps all features but reduces their impact
-
-3. **Regularization Effect:**
-   - Lasso: More aggressive feature selection, better for high-dimensional data
-   - Ridge: More stable, better when features are correlated
-
-**Training MSE Comparison:**
-```
-C       Lasso MSE    Ridge MSE    Difference
-0.001   1.2345       0.9876       -0.2469
-0.01    0.9876       0.8765       -0.1111
-0.1     0.7654       0.7123       -0.0531
-1       0.6543       0.6234       -0.0309
-10      0.6123       0.5987       -0.0136
-100     0.5987       0.5923       -0.0064
-1000    0.5923       0.5891       -0.0032
-```
-
-**Summary:**
-- Ridge regression generally achieves lower training MSE
-- Lasso provides sparser solutions (feature selection)
-- Both methods help prevent overfitting through regularization
-- Choice between L1 and L2 depends on the problem requirements
-
-## Part (ii): Cross-Validation for Hyperparameter Selection
-
-### Question (ii)(a): 5-Fold Cross-Validation for Lasso
-
-A comprehensive range of C values was tested using 5-fold cross-validation:
-C values: [0.0001, 0.001, 0.01, 0.1, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
-
-**Cross-Validation Results:**
-The cross-validation process revealed the optimal C value that minimizes the mean squared error across all folds, providing a robust estimate of model performance.
-
-### Question (ii)(b): Recommended C Value for Lasso
-
-Based on cross-validation analysis, the optimal C value was determined by:
-1. Minimizing the cross-validation MSE
-2. Considering the standard deviation for stability
-3. Balancing bias and variance effectively
-
-**Optimal Lasso Model:**
-- Optimal C: [Value determined from CV]
-- Cross-validation MSE: [Value] ± [Standard deviation]
-- Number of non-zero coefficients: [Number]/21
-- Training MSE: [Value]
-
-**Recommendation Justification:**
-1. The chosen C value minimizes cross-validation MSE
-2. Provides the best generalization performance
-3. Uses an appropriate number of features for good sparsity
-4. Shows reasonable standard deviation indicating stable performance
-5. Balances bias and variance effectively
-
-### Question (ii)(c): Cross-Validation for Ridge Regression
-
-The same cross-validation procedure was applied to Ridge regression models.
-
-**Optimal Ridge Model:**
-- Optimal C: [Value determined from CV]
-- Cross-validation MSE: [Value] ± [Standard deviation]
-- Number of non-zero coefficients: [Number]/21 (typically all features)
-- Training MSE: [Value]
-
-**Ridge Cross-validation Analysis:**
-1. The plot shows the mean CV MSE and its standard deviation for each C value
-2. We choose the C value that minimizes the CV MSE
-3. Ridge regression typically shows more stable behavior than Lasso
-4. The optimal C provides the best bias-variance tradeoff
-5. Optimal C provides the best generalization performance
-
-## Final Comparison and Recommendations
-
-### Performance Comparison
-
-**Optimal Lasso Model:**
-- C = [Optimal value]
-- CV MSE = [Value] ± [Standard deviation]
-- Non-zero coefficients = [Number]/21
-- Training MSE = [Value]
-
-**Optimal Ridge Model:**
-- C = [Optimal value]
-- CV MSE = [Value] ± [Standard deviation]
-- Non-zero coefficients = [Number]/21
-- Training MSE = [Value]
-
-### Final Recommendation
-
-Based on the comprehensive analysis:
-
-[The better performing model] regression performs better with C = [optimal value]
-Advantage: [Difference] lower CV MSE
-
-### Key Insights
-
-1. **Cross-validation** is essential for selecting optimal hyperparameters and provides robust performance estimates
-2. **L1 regularization (Lasso)** provides sparsity and automatic feature selection, making it ideal for high-dimensional problems
-3. **L2 regularization (Ridge)** provides stability and smoothness, making it better for correlated features
-4. **The choice** between L1 and L2 depends on the specific requirements of the problem
-5. **Both methods** effectively prevent overfitting through regularization, but with different mechanisms
-
-## Technical Implementation
-
-### Code Structure
-
-The implementation follows a systematic approach:
-
-1. **Data Loading and Exploration**: Loading the dataset and creating 3D visualizations
-2. **Feature Engineering**: Creating polynomial features up to degree 5
-3. **Model Training**: Training Lasso and Ridge models with various C values
-4. **Visualization**: Creating 3D prediction surfaces and coefficient comparisons
-5. **Cross-Validation**: Implementing 5-fold CV for hyperparameter selection
-6. **Analysis**: Comprehensive comparison and recommendation
-
-### Key Libraries Used
-
-- **NumPy**: Numerical computations and array operations
-- **Pandas**: Data manipulation and analysis
-- **Matplotlib**: 2D and 3D plotting and visualization
-- **Scikit-learn**: Machine learning models and cross-validation
-- **PolynomialFeatures**: Feature engineering for polynomial terms
-
-### Reproducibility
-
-All experiments use fixed random seeds (random_state=42) to ensure reproducible results. The code is well-documented and modular, making it easy to reproduce and extend the analysis.
-
-## Conclusion
-
-This assignment successfully demonstrates the principles of regularization in machine learning through Lasso and Ridge regression. The analysis shows how:
-
-1. **Polynomial features** can capture non-linear relationships in data
-2. **L1 regularization** promotes sparsity and feature selection
-3. **L2 regularization** provides stability and smoothness
-4. **Cross-validation** is crucial for hyperparameter selection
-5. **Visualization** helps understand model behavior and the bias-variance tradeoff
-
-The comprehensive analysis provides valuable insights into the practical application of regularized regression methods and their role in preventing overfitting while maintaining model performance.
+**Dataset ID:** # id:23-23--23
 
 ---
 
-*This report demonstrates a thorough understanding of regularization techniques, cross-validation methodology, and the bias-variance tradeoff in machine learning.*
+## Introduction
+
+In this assignment I've used Lasso and Ridge regression on a dataset with polynomial features to understand how regularization works and how to pick the best hyperparameter using cross-validation. The dataset has 199 data points with two input features (x1, x2) and one target variable (y).
+
+## Part (i): Training Lasso and Ridge Models
+
+### (i)(a) Looking at the Data
+
+First I loaded the data and plotted it in 3D to see what it looks like:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+data = np.loadtxt('week3.csv', delimiter=',', skiprows=1)
+X = data[:, :2]
+y = data[:, 2]
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# plot points colored by target value
+scatter = ax.scatter(X[:,0], X[:,1], y, c=y, cmap='viridis', s=30)
+
+ax.set_xlabel('Feature 1 (x1)')
+ax.set_ylabel('Feature 2 (x2)')
+ax.set_zlabel('Target (y)')
+ax.set_title('3D Scatter Plot')
+
+# add colorbar
+plt.colorbar(scatter, ax=ax, shrink=0.5, aspect=5, label='Target (y)')
+
+plt.show()
+```
+
+The points are colored by their target value using the viridis colormap - darker colors represent lower y values and brighter colors represent higher y values. This color coding helps visualize how the target changes across the feature space.
+
+**Does the data lie on a plane or curve?**
+
+Looking at the scatter plot, the data definitely looks curved, not flat. You can see from the color gradient that the target values follow a non-linear pattern across the feature space. If I tried fitting just a plane (linear model) to this it wouldn't work well. This tells me I need polynomial features to capture the non-linear patterns.
+
+### (i)(b) Lasso with Polynomial Features
+
+I created polynomial features up to degree 5, which gives 21 features total:
+
+```python
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import Lasso
+
+poly = PolynomialFeatures(degree=5, include_bias=True)
+Xpoly = poly.fit_transform(X)
+```
+
+The 21 features are: 1, x1, x2, x1², x1x2, x2², x1³, x1²x2, x1x2², x2³, x1⁴, x1³x2, x1²x2², x1x2³, x2⁴, x1⁵, x1⁴x2, x1³x2², x1²x2³, x1x2⁴, x2⁵
+
+Then I trained Lasso models with different C values. Remember that sklearn uses alpha = 1/(2C), so:
+
+```python
+C_values = [0.001, 0.01, 0.1, 1, 10, 100, 1000]
+
+for C in C_values:
+    model = Lasso(alpha=1/(2*C), max_iter=10000)
+    model.fit(Xpoly, y)
+```
+
+**Results:**
+
+| C     | Non-zero Coefficients | Training MSE |
+|-------|----------------------|--------------|
+| 0.001 | 0                    | 0.4574       |
+| 0.01  | 0                    | 0.4574       |
+| 0.1   | 0                    | 0.4574       |
+| 1     | 0                    | 0.4574       |
+| 10    | 2                    | 0.0772       |
+| 100   | 2                    | 0.0392       |
+| 1000  | 10                   | 0.0368       |
+
+**What's happening as C changes?**
+
+When C is small (0.001 to 1), the regularization is really strong - so strong that ALL coefficients get pushed to zero. The model just predicts a constant value, which gives bad MSE.
+
+At C=10, finally two coefficients become non-zero: x2 and x1². As C increases further (100, 1000), more coefficients become non-zero and the training error goes down.
+
+**Detailed coefficients for all C values:**
+
+| Feature | C=0.001 | C=0.01 | C=0.1 | C=1 | C=10 | C=100 | C=1000 |
+|---------|---------|--------|-------|-----|------|-------|--------|
+| x2 | 0 | 0 | 0 | 0 | -0.845251 | -0.987955 | -1.049456 |
+| x1² | 0 | 0 | 0 | 0 | 0.510417 | 1.060313 | 1.109467 |
+| x1x2 | 0 | 0 | 0 | 0 | 0 | 0 | -0.179636 |
+| x1³ | 0 | 0 | 0 | 0 | 0 | 0 | -0.012399 |
+| x1²x2 | 0 | 0 | 0 | 0 | 0 | 0 | 0.044510 |
+| x1³x2 | 0 | 0 | 0 | 0 | 0 | 0 | 0.213033 |
+| x1⁴x2 | 0 | 0 | 0 | 0 | 0 | 0 | -0.094151 |
+| x1³x2² | 0 | 0 | 0 | 0 | 0 | 0 | -0.008270 |
+| x1x2⁴ | 0 | 0 | 0 | 0 | 0 | 0 | -0.033363 |
+| x2⁵ | 0 | 0 | 0 | 0 | 0 | 0 | 0.125468 |
+
+This is the L1 penalty in action - it forces coefficients to be exactly zero, not just small. This is called *feature selection*.
+
+### (i)(c) Visualizing Predictions
+
+I generated predictions on a grid that extends beyond the training data range (as required). My data goes from about -1 to 1, so I extended the grid to about -3 to 3:
+
+```python
+x1_range = X[:,0].max() - X[:,0].min()
+x2_range = X[:,1].max() - X[:,1].min()
+x1_min = X[:,0].min() - 1.0*x1_range
+x1_max = X[:,0].max() + 1.0*x1_range
+x2_min = X[:,1].min() - 1.0*x2_range
+x2_max = X[:,1].max() + 1.0*x2_range
+
+x1_grid = np.linspace(x1_min, x1_max, 60)
+x2_grid = np.linspace(x2_min, x2_max, 60)
+X1_mesh, X2_mesh = np.meshgrid(x1_grid, x2_grid)
+
+Xg = np.c_[X1_mesh.ravel(), X2_mesh.ravel()]
+Xg_poly = poly.transform(Xg)
+Z = model.predict(Xg_poly).reshape(X1_mesh.shape)
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(X1_mesh, X2_mesh, Z, alpha=0.6, cmap='viridis')
+ax.scatter(X[:,0], X[:,1], y, c='red', s=30)
+plt.show()
+```
+
+I plotted surfaces for C = 0.001, C = 1, and C = 1000.
+
+**What I see:**
+
+- **C = 0.001**: Almost completely flat surface. The model is totally underfitting - it's just predicting roughly the mean value everywhere because all coefficients are zero.
+
+- **C = 1**: Still flat. Same problem - regularization is too strong.
+
+- **C = 1000**: Now we see a curved surface that fits the data points pretty well. The model is complex enough to capture the patterns. Maybe a bit too complex though - could be starting to overfit.
+
+The plots clearly show that as C increases, the prediction surface goes from flat (underfitting) to curved (better fit).
+
+### (i)(d) Underfitting vs Overfitting
+
+**What is underfitting?** When your model is too simple to capture the actual patterns in the data. In Lasso, this happens when C is too small and regularization is too strong. You get high bias (model is biased toward being too simple) and low variance (predictions don't change much with different training sets). Both training error and test error are high.
+
+**What is overfitting?** When your model is too complex and starts fitting the noise in the training data instead of just the real pattern. Happens when C is too large. You get low bias but high variance (predictions change a lot with different training sets). Training error is low but test error is high.
+
+**How C controls this trade-off:**
+
+The C parameter controls the strength of regularization through the penalty term:
+
+J(θ) = (1/m) Σ(h<sub>θ</sub>(x<sup>(i)</sup>) - y<sup>(i)</sup>)² + (1/C) Σ|θ<sub>j</sub>|
+
+- **Small C** → large penalty → strong regularization → fewer non-zero coefficients → simpler model → underfitting
+- **Large C** → small penalty → weak regularization → more non-zero coefficients → complex model → overfitting
+
+From my results:
+- C ≤ 1: Definitely underfitting (0 non-zero coefficients, MSE = 0.4574)
+- C = 10: Starting to fit (2 coefficients, MSE = 0.0772)
+- C = 100: Good fit (2 coefficients, MSE = 0.0392)
+- C = 1000: Possibly overfitting (10 coefficients, MSE = 0.0368)
+
+The sweet spot is somewhere around C = 10-100 where we balance complexity and regularization.
+
+### (i)(e) Ridge Regression Comparison
+
+Ridge regression uses L2 penalty instead of L1:
+
+J(θ) = (1/m) Σ(h<sub>θ</sub>(x<sup>(i)</sup>) - y<sup>(i)</sup>)² + (1/C) θ<sup>T</sup>θ
+
+```python
+from sklearn.linear_model import Ridge
+
+for C in C_values:
+    model = Ridge(alpha=1/(2*C))
+    model.fit(Xpoly, y)
+```
+
+**Ridge Results:**
+
+| C     | Training MSE |
+|-------|--------------|
+| 0.001 | 0.3467       |
+| 0.01  | 0.1211       |
+| 0.1   | 0.0455       |
+| 1     | 0.0370       |
+| 10    | 0.0351       |
+| 100   | 0.0349       |
+| 1000  | 0.0349       |
+
+**Key Differences Between Lasso and Ridge:**
+
+1. **Sparsity**: This is the big one. Lasso sets coefficients to *exactly* zero (L1 penalty), while Ridge just makes them small (L2 penalty). You can see this at C=1:
+
+| Feature | Lasso | Ridge  |
+|---------|-------|--------|
+| x1      | 0.0000| -0.0031|
+| x2      | 0.0000| -1.0192|
+| x1²     | 0.0000| 0.9092 |
+| x1x2    | 0.0000| -0.1991|
+| x2²     | 0.0000| -0.0510|
+| (and so on...) | | |
+
+Lasso: All zeros.  
+Ridge: Small but non-zero values for all 21 features.
+
+2. **Training Error**: Ridge generally achieves lower training MSE than Lasso for the same C value.
+
+3. **Interpretability**: Lasso gives you automatic feature selection - easier to interpret because you know which features matter. Ridge keeps everything.
+
+**When to use which?**
+
+- Use **Lasso** when you think only a few features really matter and you want automatic feature selection
+- Use **Ridge** when you think most features contribute something and you just want to shrink them
+
+## Part (ii): Cross-Validation for Hyperparameter Selection
+
+### (ii)(a) 5-Fold Cross-Validation for Lasso
+
+I used 5-fold CV to find the best C value. Split the data into 5 parts, train on 4 parts and test on the 5th, repeat for all combinations:
+
+```python
+from sklearn.model_selection import KFold
+
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
+C_cv = [0.001, 0.01, 0.1, 0.5, 1, 2, 5, 10, 50, 100, 500, 1000]
+
+cv_means = []
+cv_stds = []
+
+for C in C_cv:
+    scores = []
+    for train_idx, val_idx in kf.split(Xpoly):
+        model = Lasso(alpha=1/(2*C), max_iter=10000)
+        model.fit(Xpoly[train_idx], y[train_idx])
+        pred = model.predict(Xpoly[val_idx])
+        scores.append(mean_squared_error(y[val_idx], pred))
+    
+    cv_means.append(np.mean(scores))
+    cv_stds.append(np.std(scores))
+
+plt.errorbar(C_cv, cv_means, yerr=cv_stds, fmt='o-', capsize=5)
+plt.xscale('log')
+plt.xlabel('C value')
+plt.ylabel('CV MSE')
+plt.show()
+```
+
+**Why this range of C values?**
+
+I started small (0.001) where regularization is super strong, and went up to 1000 where it's very weak. Used 12 different values to get a good picture of what's happening. The lecture notes suggest increasing by factors of 5 or 10, which is roughly what I did.
+
+**CV Results:**
+
+| C    | Mean CV MSE | Std Dev |
+|------|-------------|---------|
+| 0.001| 0.4670      | 0.1241  |
+| 0.01 | 0.4670      | 0.1241  |
+| 0.1  | 0.4670      | 0.1241  |
+| 0.5  | 0.4670      | 0.1241  |
+| 1    | 0.4670      | 0.1241  |
+| 2    | 0.3571      | 0.1239  |
+| 5    | 0.1801      | 0.0552  |
+| 10   | 0.0814      | 0.0260  |
+| 50   | 0.0416      | 0.0119  |
+| **100** | **0.0408** | **0.0119** |
+| 500  | 0.0419      | 0.0135  |
+| 1000 | 0.0429      | 0.0146  |
+
+The error bars (standard deviation) tell us how stable the model is across different folds.
+
+### (ii)(b) Recommended C Value for Lasso
+
+**Best C = 100**
+
+**Why?**
+- It has the lowest cross-validation MSE: 0.0408
+- The standard deviation is reasonable (0.0119), so it's stable
+- Looking at the plot, C=50 and C=100 are pretty close, but C=100 edges it slightly
+- After C=100, the error starts going back up, which suggests we'd be overfitting
+
+**Final Lasso Model (C=100):**
+- CV MSE: 0.0408 ± 0.0119
+- Non-zero coefficients: 2 out of 21
+- The two features selected: x2 and x1²
+- Coefficients: 
+  - x2: -0.987955
+  - x1²: 1.060313
+
+This is a really nice sparse solution - out of 21 possible features, Lasso picked just 2 that actually matter. Makes sense given what we saw in the 3D plot.
+
+### (ii)(c) Cross-Validation for Ridge
+
+Did the same thing for Ridge:
+
+```python
+ridge_cv_means = []
+ridge_cv_stds = []
+
+for C in C_cv:
+    scores = []
+    for train_idx, val_idx in kf.split(Xpoly):
+        model = Ridge(alpha=1/(2*C))
+        model.fit(Xpoly[train_idx], y[train_idx])
+        pred = model.predict(Xpoly[val_idx])
+        scores.append(mean_squared_error(y[val_idx], pred))
+    
+    ridge_cv_means.append(np.mean(scores))
+    ridge_cv_stds.append(np.std(scores))
+```
+
+**Ridge CV Results:**
+
+| C    | Mean CV MSE | Std Dev |
+|------|-------------|---------|
+| 0.001| 0.3752      | 0.1071  |
+| 0.01 | 0.1476      | 0.0476  |
+| 0.1  | 0.0521      | 0.0164  |
+| 0.5  | 0.0440      | 0.0140  |
+| 1    | 0.0435      | 0.0142  |
+| 2    | 0.0433      | 0.0146  |
+| 5    | 0.0432      | 0.0151  |
+| **10** | **0.0431** | **0.0154** |
+| 50   | 0.0435      | 0.0161  |
+| 100  | 0.0437      | 0.0164  |
+| 500  | 0.0439      | 0.0167  |
+| 1000 | 0.0440      | 0.0167  |
+
+**Best Ridge C = 10**
+
+Ridge behaves differently from Lasso. The CV error decreases smoothly as C increases, then levels off around C=10 and stays roughly constant. No dramatic jumps like we saw with Lasso.
+
+## Final Comparison
+
+**Best Lasso Model:**
+- C = 100
+- CV MSE = 0.0408 ± 0.0119
+- Non-zero coefficients = 2/21
+
+**Best Ridge Model:**
+- C = 10
+- CV MSE = 0.0431 ± 0.0154
+- Non-zero coefficients = 21/21 (all features used)
+
+**Winner: Lasso performs slightly better** with about 0.0023 lower CV MSE.
+
+But honestly both are pretty close. The choice between them depends on what you want:
+- If you want a **simpler, more interpretable model** → go with Lasso (only 2 features!)
+- If you want **slightly more stable predictions** → Ridge might be better (smaller error bars at small C)
+
+## Key Takeaways
+
+1. **Polynomial features** let us fit curved data, but we need regularization to avoid overfitting
+
+2. **L1 (Lasso)** gives sparse solutions - automatically picks important features and sets others to zero
+
+3. **L2 (Ridge)** gives smoother solutions - keeps all features but shrinks coefficients
+
+4. **Cross-validation is essential** - you can't just look at training error to pick C. My training MSE kept going down as C increased, but CV MSE started going back up after C=100. Without CV I would have picked too large a C and overfitted.
+
+5. **The grid range matters** - plotting predictions on an extended grid (beyond the training data) really helps visualize what the model is doing
+
+6. **There's always a trade-off** between bias and variance. Small C = high bias (underfitting), large C = high variance (overfitting). Cross-validation helps find the sweet spot.
+
+---
+
+## Code Appendix
+
+The full implementation is in `assignment-2.ipynb`. Key libraries used:
+- numpy: array operations and numerical computations
+- matplotlib: plotting 3D surfaces and error bars
+- sklearn: Lasso, Ridge, PolynomialFeatures, KFold, mean_squared_error
+
+All experiments use random_state=42 for reproducibility.

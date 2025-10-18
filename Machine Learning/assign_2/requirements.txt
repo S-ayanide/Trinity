@@ -15,8 +15,4 @@ matplotlib>=3.5.0
 jupyter>=1.0.0
 ipykernel>=6.0.0
 
-# Optional: For better performance
-scipy>=1.7.0
 
-# Optional: For enhanced plotting
-seaborn>=0.11.0

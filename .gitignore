@@ -2,6 +2,10 @@
 **/*.h5
 **/*.keras
 
+# Video files
+**/*.mov
+**/*.mp4
+
 # Image datasets (large folders) - global
 **/test/
 **/train_data/
