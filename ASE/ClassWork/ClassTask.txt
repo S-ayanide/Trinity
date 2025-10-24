@@ -1,0 +1,35 @@
+Objects
+
+Person under 25
+Person under 40
+
+Classes
+
+Person
+Newspaper
+
+
+Person uner 25, there should be a fashion Supplement
+For a women under 40, there should be a fashion supplement 
+For men, and for women under 35, there should be a sports supplement 
+For people from urban areas, there should be an entertainment supplement
+For people over 60, there should be a healthcare supplement
+
+
+MarketResearcher (Person, Newspaper) -> Yes/No
+
+Person extends MarketResearcher {
+    Age
+}
+
+Newspaper extends MarketResearcher {
+    Supplement
+}
+
+
+class MarketResearch {
+
+    Person person=new Person()
+    Newspaper person=new Newspaper()
+
+}
