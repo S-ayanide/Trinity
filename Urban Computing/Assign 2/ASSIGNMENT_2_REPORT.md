@@ -1,26 +1,26 @@
-# CS7NS4 Assignment 2: Urban Data Collection
+# CS7NS4 Assignment 2
 
-**Date:** October 24, 2025
-
----
-
-This report presents sensor data collected from two coffee shop locations in Dublin using the Phyphox mobile application. The data collection was conducted as preparation for Assignment 4, where I plan to analyze **Local Commerce Traffic Flow** to identify walk-by potential for local businesses. For this initial data gathering exercise, I selected two cafes—Costa Coffee and Two Boys Cafe—to collect baseline environmental sensor data at different times of day. The goal was to understand the environmental characteristics of each location and practice multi-sensor data collection techniques that will later be applied to pedestrian traffic analysis.
+**Name:** Sayan Mondal
+**Student ID:** 24377372
+**Course:** MSc Computer Science, Future Networked Systems
 
 ---
+
+For this assignment I have collected sensor data from two businesses (two coffee shops in my case) locations in Dublin using an open source mobile application called Phyphox. I collected this data as a preparation step for the final assignment 4, where I plan to analyze local commerce traffic flow near a certain businesses to identify their walk-by potential for local businesses. I chose two cafes, Costa Coffee opposite Trinity College Dublin and Two Boys Cafe in north Phibsborough to collect baseline environmental sensor data at different times of day. I wanted to understand the environmental characteristics during different hours , potentially seggregating quiet hours with busy hours based on different locations and businesses, and practice multi-sensor data collection techniques that will later be applied to pedestrian traffic analysis.
 
 ## Technical Approach
 
-The data collection utilized **Phyphox** (Physics Phone Experiments), a mobile application designed for physics experiments that provides access to multiple smartphone sensors simultaneously. The application allows high-frequency sensor recording and exports data in structured CSV format, making it suitable for urban sensing applications.
+I used utilized **Phyphox** (Physics Phone Experiments) for data collection, its a mobile application designed for physics experiments that provides access to multiple smartphone sensors simultaneously. This app makes it possible to record high frequency senor data and exports the data in a structured CSV format, it makes it suitable for collecting data easily that'd be required later.
 
-The smartphone was placed in a stable position at each location, and all sensors were configured to record simultaneously for several minutes. Data was then exported via Phyphox's built-in web interface, which generates separate CSV files for each sensor type. The complete workflow is illustrated below:
+The data was captured using my smartphone, placed at each location for a while as it recorded the data for several minutes. Data was then exported via Phyphox's built-in web interface, which generates separate CSV files for each sensor type. The complete technical diagram is illustrated below:
 
-![Phyphox Data Collection Flow](phyphox_data_flow.png)
+![Phyphox Data Collection Flow](figures/technical_diagram.png)
 
 **Figure 1:** Data collection workflow showing the progression from app configuration through sensor recording to CSV export.
 
 ### Sensors Collected
 
-Eight different smartphone sensors were recorded during each data collection session:
+Eight different sensors were used to record the different data for each session:
 
 | Sensor | Sampling Rate | Purpose |
 |--------|--------------|---------|
@@ -33,7 +33,7 @@ Eight different smartphone sensors were recorded during each data collection ses
 | Orientation | 500 Hz | Tracks device orientation in space |
 | Linear Acceleration | 500 Hz | Measures motion with gravity removed |
 
-Data was collected from **Costa Coffee** in the evening (around 18:00-19:00) for approximately 2.5 minutes, and from **Two Boys Cafe** in the afternoon (around 13:00-14:00) for approximately 5.5 minutes. Both locations are in Dublin city center.
+Data was collected from **Costa Coffee** in the evening (from 17:00-18:00) at 1 Dawson St, Dublin 2, D02 RW08, and from **Two Boys Cafe** in the afternoon (from 13:00-14:00) at 375 N Circular Rd, Phibsborough, Dublin 7, D07 FWY1.
 
 ### Sample Data
 
@@ -56,88 +56,106 @@ Below is a representative sample of the audio sensor data collected from both lo
 | 0.000104 | -0.019470 | Two Boys Cafe |
 | 0.000125 | -0.017456 | Two Boys Cafe |
 
-The audio sensor captures ambient sound at 48,000 samples per second. The complete dataset includes over 775,000 sensor readings across all eight sensors from both locations.
+Below is a representative sample of the brightness sensor data collected from both locations:
 
----
+| Time (seconds) | Illuminance (lx) | Location |
+|----------------|------------------|----------|
+| 0.008770 | 145.76 | Costa Coffee |
+| 0.208762 | 147.50 | Costa Coffee |
+| 0.408783 | 157.66 | Costa Coffee |
+| 0.608764 | 169.78 | Costa Coffee |
+| 0.808775 | 170.73 | Costa Coffee |
+| 1.008760 | 175.86 | Costa Coffee |
+| 0.000000 | 132.95 | Two Boys Cafe |
+| 0.085396 | 134.95 | Two Boys Cafe |
+| 0.285393 | 168.24 | Two Boys Cafe |
+| 0.485403 | 196.44 | Two Boys Cafe |
+| 0.685388 | 142.13 | Two Boys Cafe |
+| 0.885402 | 161.70 | Two Boys Cafe |
+
+Below is a representative sample of the magnetometer sensor data collected from both locations:
+
+| Time (seconds) | Magnetic Field X (µT) | Magnetic Field Y (µT) | Magnetic Field Z (µT) | Location |
+|----------------|----------------------|----------------------|----------------------|----------|
+| 0.053516 | 10.28 | 10.04 | -30.90 | Costa Coffee |
+| 0.063516 | 10.14 | 10.21 | -30.96 | Costa Coffee |
+| 0.073516 | 10.16 | 10.21 | -30.95 | Costa Coffee |
+| 0.083516 | 10.22 | 10.27 | -31.06 | Costa Coffee |
+| 0.081039 | -15.14 | -36.53 | -19.58 | Two Boys Cafe |
+| 0.091039 | -14.99 | -36.77 | -19.67 | Two Boys Cafe |
+| 0.101039 | -14.68 | -37.10 | -19.98 | Two Boys Cafe |
+| 0.111039 | -14.37 | -37.11 | -20.20 | Two Boys Cafe |
+
+The audio sensor captures ambient sound at 48,000 samples per second. The complete dataset includes 775,088 sensor readings across all eight sensors from both locations.
 
 ## Data Challenges
 
 ### Imperfection Issues
 
-The GPS sensor data exhibited significant imperfection problems, particularly with uncertainty and incompleteness. At Costa Coffee, critical fields like altitude, velocity, and direction were completely missing—100% of the 9 GPS readings contained no usable data for these measurements. Even at Two Boys Cafe, where 322 GPS samples were collected, the direction field was entirely absent. This uncertainty made it impossible to analyze movement patterns or altitude changes. Additionally, the GPS data suffered from vagueness, with horizontal accuracy readings as poor as 100 meters at Costa Coffee, making the location data too imprecise for any detailed spatial analysis. The first few GPS readings at Two Boys Cafe were also incomplete, missing height and velocity information entirely.
+The GPS data was very problematic, especially with gaps and poor quality. In Costa Coffee, significant fields such as Height (m), Velocity (m/s) and Direction (º) were indeed completely empty—all 9 GPS measurements of the Location sensor did not provide any information for these measurements. Even Two Boys Cafe, with a sample of 322 GPS fixes, had no directional information. As a consequence, it was not possible to analyze the paths of movement or changes in altitude. The GPS data was also very coarse, with reported levels of horizontal accuracy as poor as 100 meters at Costa Coffee making the location data too imprecise for more detailed spatial analysis. The first several GPS readings at Two Boys Cafe were incomplete in height and velocity entirely.
 
-The light sensor demonstrated granularity issues, sampling at only 2 Hz compared to the motion sensors' 500 Hz rate. This created a temporal mismatch between different sensor streams, making it difficult to synchronize events across sensors. GPS updates were even more irregular, occurring anywhere from 1 to 20 seconds apart, further complicating time-aligned analysis across the sensor suite.
+The light sensor had granularity issues, sampling at only 2 Hz compared to the motion sensors' 500 Hz rate. This created a temporal mismatch between different sensor streams, making it difficult to synchronize events across sensors. GPS updates were even more irregular, happening anywhere from 1 to 20 seconds apart, which made time-aligned analysis across the sensor suite more complicated.
 
 ### Inconsistency Problems
 
-The Two Boys Cafe accelerometer data contained notable outliers in its sampling pattern. While most readings came at the expected 2-millisecond intervals (500 Hz), there were two instances where gaps exceeded 10 milliseconds, with the largest gap reaching 177 milliseconds—88 times slower than expected. These outliers indicated system interruptions, possibly from the phone's operating system backgrounding the app or battery optimization interfering with data collection.
-
-A significant disorder issue emerged in the collection duration. Two Boys Cafe's session lasted 327 seconds while Costa Coffee's lasted only 152 seconds—a 2.15x difference. This imbalance meant that Two Boys Cafe ended up with 162,771 accelerometer samples compared to Costa Coffee's 75,624 samples. The unequal dataset sizes introduced statistical bias when comparing averages and made temporal pattern analysis more challenging.
+The Two Boys Cafe accelerometer data had some notable outliers in its sampling pattern and there was also a significant issue with the collection duration. The data that was collected in Two Boys Cafe's session lasted 327 seconds (and therefore had more data) while Costa Coffee's lasted only 152 seconds, which was a 2.15x difference in sampling. Since I was at TBC for longer, there was an imbalance, causing me to capture 162,771 accelerometer samples compared to Costa Coffee's 75,624 samples. The unequal dataset sizes introduced statistical bias when comparing averages and made temporal pattern analysis more challenging.
 
 ### Disparateness Challenges
 
-The eight different sensors operated at vastly different sampling rates, units, and scales, creating a multi-source data integration challenge. The accelerometer recorded at 500 Hz with values in meters per second squared, the light sensor at 2 Hz in brightness units, and GPS at irregular intervals in degrees and meters. Attempting to fuse or synchronize these disparate data streams would require significant temporal resampling and normalization.
+Since I used 8 different sensors and they all operated at very different sampling rates, units, and scales, creating a multi-source data integration became a challenge. The accelerometer recorded at 500 Hz with values in meters per second squared, the light sensor at 2 Hz in brightness units, and GPS at irregular intervals in degrees and meters. Trying to fuse them together to make meaningful sense would require significant temporal resampling and normalization.
 
-Furthermore, not all collected sensors were relevant to the research question. The magnetometer, which measures magnetic fields for compass functionality, provided no useful information about the coffee shop environment. Similarly, the orientation sensor tracked how the phone was positioned rather than any environmental characteristic. Linear acceleration was redundant since it's mathematically derived from the raw accelerometer data. Audio FFT and peak detection files added complexity without meaningful value for a simple ambient noise comparison. In total, 287,751 sensor readings—37% of all collected data—turned out to be irrelevant to analyzing the coffee shop environments.
-
----
+Also, since this was my first time collecting data, I collected data in batches and not all collected sensors were relevant to the final project I want to build. The orientation sensor tracked how the phone was positioned rather than any environmental characteristic which would probably not be needed. Linear acceleration was redundant since it's mathematically derived from the raw accelerometer data and the Audio FFT and peak detection files added complexity without meaningful value for a simple ambient noise comparison. In total, 287,751 sensor readings, which is about 37% of all collected data, turned out to be irrelevant to analyzing the coffee shop environments.
 
 ## How Challenges Were Addressed
 
-For the uncertainty and incompleteness in GPS data, I excluded all GPS-derived metrics from the analysis. Instead of attempting to work with the unreliable altitude, velocity, and direction fields, I focused only on the basic latitude and longitude coordinates for coarse location tagging. The coffee shop names and manually recorded visit times provided more reliable context than the incomplete sensor data.
+For the uncertainty and incompleteness in GPS data, I excluded all the related GPS metrics from the analysis. Instead of working with incomplete/unreliable data or noise in the data (due to over collection) I focused only on the basic latitude and longitude coordinates for coarse location tagging. I recorded the the coffee shop names and manually recorded visit times provided more reliable context than the incomplete sensor data.
 
-To handle the granularity mismatch between sensors, I analyzed each sensor independently at its native sampling rate rather than attempting synchronization. Statistical aggregations like averages and medians were calculated within each sensor type, avoiding the complications of cross-sensor time alignment. This approach preserved the integrity of each data stream while still enabling meaningful comparisons.
+To handle the data challenges, I took a straightforward approach that prioritized data availability over sophisticated preprocessing. Rather than attempting complex synchronization or normalization, I just worked with the data as collected to understand the real-world challenges of mobile sensor data collection.
 
-For sampling rate outliers, I documented the gaps but chose not to interpolate or fill them. Preserving the authentic data, gaps and all, seemed more appropriate for understanding real-world collection challenges. Additionally, using robust statistics like median alongside mean helped mitigate the influence of any anomalous samples.
+The sampling rate outliers and gaps were identified through a separate data quality analysis script, but the main analysis used a single comprehensive script (`coffee_shop_analysis.py`) that proceeded with the raw data as is. It helped identify any gaps or irregularities that occurred during data gathering.
 
-The duration mismatch was addressed through normalization. Rather than comparing raw totals, I converted all metrics to per-second rates and used percentages for comparisons. For example, average brightness per second rather than total brightness collected. This made the unequal session lengths less problematic for statistical comparison.
+The duration mismatch between locations (Costa: ~2.5 minutes, TBC: ~5.4 minutes) was acknowledged but not normalized. Instead, I compared raw averages and totals, accepting that the unequal session lengths would affect the statistical reliability of comparisons.
 
-Finally, to handle the disparateness of irrelevant sensors, I performed a focused selection analysis. Only four sensors were deemed relevant to environmental comparison: light (ambient brightness), accelerometer (activity/movement), gyroscope (rotational patterns), and audio (ambient noise). The other four sensors—GPS, magnetometer, orientation, and linear acceleration—were excluded from the analysis entirely, reducing the dataset by 37% but improving focus and relevance.
-
----
+Regarding sensor selection, while I identified that only four sensors were most relevant for environmental comparison (light, accelerometer, gyroscope, and audio), the analysis actually included all collected sensors. The other sensors (GPS, magnetometer, orientation, and linear acceleration) were loaded and available, though they provided limited value for the coffee shop environment comparison.
 
 ## Data Analysis Results
 
 ### Brightness Comparison
 
-![Light Sensor Comparison](light_sensor_comparison.png)
+![Light Sensor Comparison](figures/light_sensor_comparison.png)
 
 **Figure 2:** Brightness levels measured at both locations over time.
 
-Two Boys Cafe measured significantly brighter than Costa Coffee. The afternoon cafe averaged 257 units of brightness compared to Costa's evening measurement of 123 units—roughly 109% brighter. This difference aligns with expectations, as afternoon locations benefit from natural daylight through windows, while evening locations rely primarily on artificial lighting. The maximum brightness at Two Boys Cafe reached 402 units versus Costa's peak of 284 units.
+The Two Boys Cafe was a lot more brighter than Costa Coffee, The afternoon cafe averaged 257 units of brightness compared to Costa's evening measurement of 123 units, which is roughly 109% brighter. This difference matches the expectations because afternoon locations benefit from natural daylight through windows while evening locations rely primarily on artificial lighting, we can see this because the maximum brightness at Two Boys Cafe reached 402 units versus Costa's peak of 284 units.
 
 ### Movement and Activity
 
-![Accelerometer Comparison](accelerometer_comparison.png)
+![Accelerometer Comparison](figures/accelerometer_comparison.png)
 
-**Figure 3:** Motion sensor measurements showing device movement patterns.
+**Figure 3:** Motion sensor measurements
 
-The motion sensors revealed nearly identical patterns at both locations. Average movement measured 9.90 at Costa Coffee and 9.91 at Two Boys Cafe—essentially no difference. This similarity likely reflects that the phone remained stationary on a table at both locations, capturing only ambient vibrations and minor table movements rather than significant environmental differences.
+The average movement measured was 9.90 at Costa Coffee and 9.91 at Two Boys Cafe, which was essentially no difference at all because the phone/sensor was stationary for the most part for data collection and it captured only ambient vibrations and minor table movements rather than significant environmental differences.
 
 ### Ambient Noise
 
-![Audio Comparison](audio_comparison.png)
+![Audio Comparison](figures/audio_comparison.png)
 
-**Figure 4:** Sound level recordings from both locations.
+**Figure 4:** Sound level recordings in both locations.
 
-Two Boys Cafe was considerably noisier than Costa Coffee. The afternoon cafe measured an average sound level of 0.040 compared to Costa's 0.020—approximately 97% louder. This substantial difference suggests higher customer activity, more conversation, or generally more ambient activity during the afternoon hours at Two Boys Cafe compared to the quieter evening atmosphere at Costa Coffee.
+TBC measured an average sound level of 0.040 compared to 0.020 at Costa, TBC was approximately 97% louder than Costa because it was lunch time for TBC. This also means that there were higher customer activity more conversation and activity during the afternoon hours at Two Boys Cafe compared to the quieter evening atmosphere at Costa Coffee.
 
 ### Rotation Patterns
 
-![Gyroscope Comparison](gyroscope_comparison.png)
+![Gyroscope Comparison](figures/gyroscope_comparison.png)
 
-**Figure 5:** Rotational movement captured by the gyroscope sensor.
+**Figure 5:** Rotational movement
 
-Both locations showed minimal rotational movement, indicating the device remained in a stable position throughout recording. The gyroscope data confirmed that the phone was not being handled or moved during the data collection sessions.
+As the device remained in a stable position throughout recording the data captured doesn't show a lot of rotational movement. The gyroscope data confirmed that the phone was not being handled or moved during the data collection sessions.
 
 ### Overall Comparison
 
-![Comprehensive Comparison](comprehensive_comparison.png)
+![Comprehensive Comparison](figures/comprehensive_comparison.png)
 
-**Figure 6:** Combined view of all sensor measurements for both locations.
+**Figure 6:** Sensor measurements for both locations.
 
-The comprehensive comparison reveals that the most significant environmental difference between the two locations was brightness (109% higher at Two Boys Cafe) and noise level (97% higher at Two Boys Cafe), while movement patterns remained essentially identical. These findings suggest that time of day and customer activity levels are the primary distinguishing factors between the two coffee shop environments.
-
----
-
-**End of Report**
+The most significant environmental difference between the two locations was brightness and noise level while movement patterns remained essentially identical. These findings suggest that time of day and customer activity levels are the primary distinguishing factors between the two coffee shop environments.
