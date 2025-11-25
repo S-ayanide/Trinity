@@ -45,16 +45,11 @@ y1 = data1[:, 2]
 X2 = data2[:, :2]
 y2 = data2[:, 2]
 
-print('Dataset 1:', X1.shape, y1.shape)
-print('Dataset 2:', X2.shape, y2.shape)
-print('Dataset 1 class distribution:', np.unique(y1, return_counts=True))
-print('Dataset 2 class distribution:', np.unique(y2, return_counts=True))
-
-# ==================== DATASET 1 ====================
-
 print('\n' + '='*50)
 print('DATASET 1')
-print('='*50 + '\n')
+print('='*50)
+print('Shape:', X1.shape)
+print('Class distribution:', np.unique(y1, return_counts=True))
 
 # (i)(a) Logistic Regression with polynomial features
 
@@ -78,7 +73,6 @@ best_C = 1
 f1_results = np.zeros((len(q_range), len(C_range)))
 f1_stds = np.zeros((len(q_range), len(C_range)))
 
-print('Running cross-validation for Logistic Regression...')
 for i, q in enumerate(q_range):
     poly = PolynomialFeatures(degree=q, include_bias=True)
     X1_poly = poly.fit_transform(X1)
@@ -101,7 +95,7 @@ for i, q in enumerate(q_range):
             best_q = q
             best_C = C
 
-print(f'\nBest q: {best_q}, Best C: {best_C}, Best F1: {best_f1:.4f}')
+print(f'\nLogistic Regression: Best q={best_q}, Best C={best_C}, CV F1={best_f1:.4f}')
 
 fig, axes = plt.subplots(1, 2, figsize=(15, 5))
 
@@ -151,9 +145,6 @@ plt.legend()
 plt.savefig('figures/dataset1_logistic_boundary.png', dpi=300, bbox_inches='tight')
 plt.show()
 
-print(f'\nPolynomial degree: {best_q}')
-print(f'Number of features: {X1_poly_best.shape[1]}')
-
 # (i)(b) kNN Classifier
 
 k_range = [1, 3, 5, 7, 9, 11, 15, 21, 31, 41, 51]
@@ -162,7 +153,6 @@ kf = KFold(n_splits=5, shuffle=True, random_state=42)
 f1_means = []
 f1_stds = []
 
-print('\nRunning cross-validation for kNN...')
 for k in k_range:
     f1_scores = []
     for train_idx, val_idx in kf.split(X1):
@@ -177,7 +167,7 @@ for k in k_range:
 best_k_idx = np.argmax(f1_means)
 best_k1 = k_range[best_k_idx]
 
-print(f'\nBest k: {best_k1}, Best F1: {f1_means[best_k_idx]:.4f}')
+print(f'kNN: Best k={best_k1}, CV F1={f1_means[best_k_idx]:.4f}')
 
 plt.errorbar(k_range, f1_means, yerr=f1_stds, marker='o', capsize=5)
 plt.xlabel('k')
@@ -220,27 +210,11 @@ cm_knn1 = confusion_matrix(y1, y_pred_knn1, labels=[-1, 1])
 cm_dummy_freq = confusion_matrix(y1, y_pred_dummy_freq, labels=[-1, 1])
 cm_dummy_uniform = confusion_matrix(y1, y_pred_dummy_uniform, labels=[-1, 1])
 
-print('\nLogistic Regression Confusion Matrix:')
-print(cm_log1)
-print(f'Accuracy: {(cm_log1[0,0] + cm_log1[1,1]) / cm_log1.sum():.4f}')
-print(f'True Positive Rate: {cm_log1[1,1] / (cm_log1[1,0] + cm_log1[1,1]):.4f}')
-print(f'False Positive Rate: {cm_log1[0,1] / (cm_log1[0,0] + cm_log1[0,1]):.4f}')
-print(f'Precision: {cm_log1[1,1] / (cm_log1[0,1] + cm_log1[1,1]):.4f}')
-
-print('\nkNN Confusion Matrix:')
-print(cm_knn1)
-print(f'Accuracy: {(cm_knn1[0,0] + cm_knn1[1,1]) / cm_knn1.sum():.4f}')
-print(f'True Positive Rate: {cm_knn1[1,1] / (cm_knn1[1,0] + cm_knn1[1,1]):.4f}')
-print(f'False Positive Rate: {cm_knn1[0,1] / (cm_knn1[0,0] + cm_knn1[0,1]):.4f}')
-print(f'Precision: {cm_knn1[1,1] / (cm_knn1[0,1] + cm_knn1[1,1]):.4f}')
-
-print('\nBaseline (Most Frequent) Confusion Matrix:')
-print(cm_dummy_freq)
-print(f'Accuracy: {(cm_dummy_freq[0,0] + cm_dummy_freq[1,1]) / cm_dummy_freq.sum():.4f}')
-
-print('\nBaseline (Random) Confusion Matrix:')
-print(cm_dummy_uniform)
-print(f'Accuracy: {(cm_dummy_uniform[0,0] + cm_dummy_uniform[1,1]) / cm_dummy_uniform.sum():.4f}')
+print('\nConfusion Matrices:')
+print(f'Logistic Regression - Accuracy: {(cm_log1[0,0] + cm_log1[1,1]) / cm_log1.sum():.4f}')
+print(f'kNN - Accuracy: {(cm_knn1[0,0] + cm_knn1[1,1]) / cm_knn1.sum():.4f}')
+print(f'Baseline (Most Frequent) - Accuracy: {(cm_dummy_freq[0,0] + cm_dummy_freq[1,1]) / cm_dummy_freq.sum():.4f}')
+print(f'Baseline (Random) - Accuracy: {(cm_dummy_uniform[0,0] + cm_dummy_uniform[1,1]) / cm_dummy_uniform.sum():.4f}')
 
 # (i)(d) ROC Curves
 
@@ -273,14 +247,15 @@ plt.grid(True, alpha=0.3)
 plt.savefig('figures/dataset1_roc.png', dpi=300, bbox_inches='tight')
 plt.show()
 
-print(f'\nLogistic Regression AUC: {auc_log1:.4f}')
-print(f'kNN AUC: {auc_knn1:.4f}')
+print(f'\nAUC: Logistic Regression={auc_log1:.4f}, kNN={auc_knn1:.4f}')
 
 # ==================== DATASET 2 ====================
 
 print('\n' + '='*50)
 print('DATASET 2')
-print('='*50 + '\n')
+print('='*50)
+print('Shape:', X2.shape)
+print('Class distribution:', np.unique(y2, return_counts=True))
 
 # (ii)(a) Logistic Regression with polynomial features
 
@@ -304,7 +279,6 @@ best_C = 1
 f1_results = np.zeros((len(q_range), len(C_range)))
 f1_stds = np.zeros((len(q_range), len(C_range)))
 
-print('Running cross-validation for Logistic Regression...')
 for i, q in enumerate(q_range):
     poly = PolynomialFeatures(degree=q, include_bias=True)
     X2_poly = poly.fit_transform(X2)
@@ -327,7 +301,7 @@ for i, q in enumerate(q_range):
             best_q = q
             best_C = C
 
-print(f'\nBest q: {best_q}, Best C: {best_C}, Best F1: {best_f1:.4f}')
+print(f'\nLogistic Regression: Best q={best_q}, Best C={best_C}, CV F1={best_f1:.4f}')
 
 fig, axes = plt.subplots(1, 2, figsize=(15, 5))
 
@@ -377,9 +351,6 @@ plt.legend()
 plt.savefig('figures/dataset2_logistic_boundary.png', dpi=300, bbox_inches='tight')
 plt.show()
 
-print(f'\nPolynomial degree: {best_q}')
-print(f'Number of features: {X2_poly_best.shape[1]}')
-
 # (ii)(b) kNN Classifier
 
 k_range = [1, 3, 5, 7, 9, 11, 15, 21, 31, 41, 51]
@@ -388,7 +359,6 @@ kf = KFold(n_splits=5, shuffle=True, random_state=42)
 f1_means = []
 f1_stds = []
 
-print('\nRunning cross-validation for kNN...')
 for k in k_range:
     f1_scores = []
     for train_idx, val_idx in kf.split(X2):
@@ -403,7 +373,7 @@ for k in k_range:
 best_k_idx = np.argmax(f1_means)
 best_k2 = k_range[best_k_idx]
 
-print(f'\nBest k: {best_k2}, Best F1: {f1_means[best_k_idx]:.4f}')
+print(f'kNN: Best k={best_k2}, CV F1={f1_means[best_k_idx]:.4f}')
 
 plt.errorbar(k_range, f1_means, yerr=f1_stds, marker='o', capsize=5)
 plt.xlabel('k')
@@ -446,27 +416,11 @@ cm_knn2 = confusion_matrix(y2, y_pred_knn2, labels=[-1, 1])
 cm_dummy_freq2 = confusion_matrix(y2, y_pred_dummy_freq2, labels=[-1, 1])
 cm_dummy_uniform2 = confusion_matrix(y2, y_pred_dummy_uniform2, labels=[-1, 1])
 
-print('\nLogistic Regression Confusion Matrix:')
-print(cm_log2)
-print(f'Accuracy: {(cm_log2[0,0] + cm_log2[1,1]) / cm_log2.sum():.4f}')
-print(f'True Positive Rate: {cm_log2[1,1] / (cm_log2[1,0] + cm_log2[1,1]):.4f}')
-print(f'False Positive Rate: {cm_log2[0,1] / (cm_log2[0,0] + cm_log2[0,1]):.4f}')
-print(f'Precision: {cm_log2[1,1] / (cm_log2[0,1] + cm_log2[1,1]):.4f}')
-
-print('\nkNN Confusion Matrix:')
-print(cm_knn2)
-print(f'Accuracy: {(cm_knn2[0,0] + cm_knn2[1,1]) / cm_knn2.sum():.4f}')
-print(f'True Positive Rate: {cm_knn2[1,1] / (cm_knn2[1,0] + cm_knn2[1,1]):.4f}')
-print(f'False Positive Rate: {cm_knn2[0,1] / (cm_knn2[0,0] + cm_knn2[0,1]):.4f}')
-print(f'Precision: {cm_knn2[1,1] / (cm_knn2[0,1] + cm_knn2[1,1]):.4f}')
-
-print('\nBaseline (Most Frequent) Confusion Matrix:')
-print(cm_dummy_freq2)
-print(f'Accuracy: {(cm_dummy_freq2[0,0] + cm_dummy_freq2[1,1]) / cm_dummy_freq2.sum():.4f}')
-
-print('\nBaseline (Random) Confusion Matrix:')
-print(cm_dummy_uniform2)
-print(f'Accuracy: {(cm_dummy_uniform2[0,0] + cm_dummy_uniform2[1,1]) / cm_dummy_uniform2.sum():.4f}')
+print('\nConfusion Matrices:')
+print(f'Logistic Regression - Accuracy: {(cm_log2[0,0] + cm_log2[1,1]) / cm_log2.sum():.4f}')
+print(f'kNN - Accuracy: {(cm_knn2[0,0] + cm_knn2[1,1]) / cm_knn2.sum():.4f}')
+print(f'Baseline (Most Frequent) - Accuracy: {(cm_dummy_freq2[0,0] + cm_dummy_freq2[1,1]) / cm_dummy_freq2.sum():.4f}')
+print(f'Baseline (Random) - Accuracy: {(cm_dummy_uniform2[0,0] + cm_dummy_uniform2[1,1]) / cm_dummy_uniform2.sum():.4f}')
 
 # (ii)(d) ROC Curves
 
@@ -499,8 +453,4 @@ plt.grid(True, alpha=0.3)
 plt.savefig('figures/dataset2_roc.png', dpi=300, bbox_inches='tight')
 plt.show()
 
-print(f'\nLogistic Regression AUC: {auc_log2:.4f}')
-print(f'kNN AUC: {auc_knn2:.4f}')
-
-print('\nDone!')
-
+print(f'\nAUC: Logistic Regression={auc_log2:.4f}, kNN={auc_knn2:.4f}')
