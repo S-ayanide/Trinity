@@ -1,0 +1,58 @@
+{
+  "config1": {
+    "config": {
+      "n_embd": 96,
+      "n_head": 4,
+      "n_layer": 4,
+      "block_size": 256,
+      "vocab_size": 40,
+      "parameters": 0.478696
+    },
+    "evaluations": {
+      "childSpeech_test": {
+        "test_loss": 0.35208952277898786,
+        "test_perplexity": 1.422035822619078,
+        "baseline_uniform_loss": 3.6888794541139363,
+        "baseline_frequency_loss": 3.121888321414517,
+        "improvement_over_uniform": 90.45538009147118,
+        "improvement_over_frequency": 88.7219052531816
+      },
+      "shakespeare": {
+        "test_loss": 6.022207219600677,
+        "test_perplexity": 412.48804337649005,
+        "baseline_uniform_loss": 3.6888794541139363,
+        "baseline_frequency_loss": 3.096162116676384,
+        "improvement_over_uniform": -63.25302288977082,
+        "improvement_over_frequency": -94.50555212093657
+      }
+    }
+  },
+  "config2": {
+    "config": {
+      "n_embd": 128,
+      "n_head": 4,
+      "n_layer": 2,
+      "block_size": 256,
+      "vocab_size": 40,
+      "parameters": 0.43908
+    },
+    "evaluations": {
+      "childSpeech_test": {
+        "test_loss": 0.3509391061961651,
+        "test_perplexity": 1.4204008296691906,
+        "baseline_uniform_loss": 3.6888794541139363,
+        "baseline_frequency_loss": 3.121888321414517,
+        "improvement_over_uniform": 90.48656616293633,
+        "improvement_over_frequency": 88.75875527676929
+      },
+      "shakespeare": {
+        "test_loss": 6.2777653670310976,
+        "test_perplexity": 532.5971738461624,
+        "baseline_uniform_loss": 3.6888794541139363,
+        "baseline_frequency_loss": 3.096162116676384,
+        "improvement_over_uniform": -70.18082171348719,
+        "improvement_over_frequency": -102.75958203926503
+      }
+    }
+  }
+}

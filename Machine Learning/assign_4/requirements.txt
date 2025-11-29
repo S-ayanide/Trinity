@@ -1,0 +1,19 @@
+# Week 9 Assignment - GPT Transformer Analysis
+# Machine Learning Assignment Dependencies
+
+# Core deep learning framework
+torch>=2.0.0
+
+# Numerical computing
+numpy>=1.24.0
+
+# Plotting and visualization
+matplotlib>=3.7.0
+
+# Progress bars for better training visualization
+tqdm>=4.65.0
+
+# Optional but recommended for better performance
+# Uncomment if needed:
+# torchvision>=0.15.0
+
